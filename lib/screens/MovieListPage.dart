@@ -45,6 +45,7 @@ class _MovieListPageState extends State<MovieListPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    movieController.movies = [];
     super.dispose();
   }
 
