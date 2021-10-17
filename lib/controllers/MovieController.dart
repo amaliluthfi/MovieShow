@@ -66,7 +66,6 @@ class MovieController extends GetxController {
 
   Future<MoviesByGenre> getMoviesByGenres(genreId, page) async {
     try {
-      print(genreId);
       isLoading.value = true;
       var url =
           "$MOVIEDBAPI/discover/movie?api_key=$APIKEY&language=en-US&sort_by=popularity.desc&with_genres=$genreId&page=$page";
@@ -110,6 +109,7 @@ class MovieController extends GetxController {
 
   Future<MovieDetail> getMovieReviews(movieId, page) async {
     try {
+      isLoading.value = true;
       var url =
           "$MOVIEDBAPI/movie/$movieId/reviews?api_key=$APIKEY&language=en-US&page=$page";
       NetworkHelpers getReviews = NetworkHelpers(url, headers: {
@@ -117,15 +117,15 @@ class MovieController extends GetxController {
       });
 
       var response = await getReviews.getData();
-      print(response);
       movieReviews = MovieReviews.fromJson(response);
-      print("Masuk 2");
       movieReviews!.results!.forEach((element) {
         reviews!.add(element);
       });
       update();
+      isLoading.value = false;
       return movieDetail!;
     } catch (e) {
+      isLoading.value = false;
       print("ini error $e");
       throw e;
     }

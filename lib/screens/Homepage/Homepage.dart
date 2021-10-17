@@ -11,6 +11,7 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MovieController movieController = Get.find();
     return Scaffold(
         body: Stack(
       children: [
@@ -24,7 +25,7 @@ class Homepage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height /4.5,
+                    height: MediaQuery.of(context).size.height / 4.5,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -101,6 +102,15 @@ class Homepage extends StatelessWidget {
                 ),
               )),
         ),
+        Obx(() {
+          return movieController.isLoading.value ? Container(
+            height: MediaQuery.of(context).size.height,
+            color: kPrimaryColor.withOpacity(0.5),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ) : SizedBox();
+        })
       ],
     ));
   }
