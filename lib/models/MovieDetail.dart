@@ -181,7 +181,7 @@ class ProductionCompany {
     });
 
     int? id;
-    dynamic? logoPath;
+    dynamic logoPath;
     String? name;
     String? originCountry;
 

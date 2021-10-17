@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_show/controllers/MovieController.dart';
 import 'package:movie_show/providers/colors.dart';
 import 'package:movie_show/providers/settings.dart';
+import 'package:movie_show/screens/TrailerPage.dart';
+import 'package:movie_show/screens/reviewsPage.dart';
 
 class MovieDetailPage extends StatelessWidget {
   const MovieDetailPage({@required this.movieId});
@@ -61,54 +64,79 @@ class MovieDetailPage extends StatelessWidget {
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  // Container(
-                                  //   width: 220,
-                                  //   child: Text(
-                                  //     movieController.movieDetail!.tagline!,
-                                  //     textAlign: TextAlign.center,
-                                  //     style: GoogleFonts.montserrat(
-                                  //       fontSize: 18,
-                                  //       color: Colors.white.withOpacity(0.8),
-                                  //       fontWeight: FontWeight.normal
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ),
                           ),
-                          movieController.movieDetail!.videos!.results!.length > 0
-                          ? Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              height: 400,
-                              child: InkWell(
-                                onTap: (){
-                                  
-                                },
-                                child: Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.white,
-                                  size: 60,
-                                ),
-                              ),
-                            ),
-                          ) : SizedBox(),
+                          movieController.movieDetail!.videos!.results!.length >
+                                  0
+                              ? Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    height: 400,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(TrailerPage(
+                                            videoId: movieController
+                                                .movieDetail!
+                                                .videos!
+                                                .results![0]
+                                                .key));
+                                      },
+                                      child: Icon(
+                                        Icons.play_arrow,
+                                        color: Colors.white,
+                                        size: 60,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
                         ]),
                         SizedBox(height: 10),
                         Container(
                           padding: EdgeInsets.all(20),
-                          child: Text(
-                            movieController.movieDetail!.overview!,
-                            style: GoogleFonts.montserrat(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(movieController.movieDetail!.overview!,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal)),
+                              SizedBox(height: 10),
+                              InkWell(
+                                onTap: () {
+                                  movieController
+                                      .getMovieReviews(
+                                          movieController.movieDetail!.id!, 1)
+                                      .then((value) {
+                                    Get.to(ReviewsPage(
+                                      movieId: movieController.movieDetail!.id!,
+                                    ));
+                                  }).catchError((e) {
+                                    Get.snackbar("Error", "Cannot get reviews",
+                                        colorText: Colors.white,
+                                        backgroundColor: kRedError);
+                                  });
+                                },
+                                child: Text("See all reviews",
+                                    style: GoogleFonts.montserrat(
                                         fontSize: 14,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.normal)
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.normal)),
+                              )
+                            ],
                           ),
                         )
                       ],
                     )
-                  : Container(),
+                  : Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
             ),
           );
         });

@@ -32,6 +32,9 @@ class GenresSection extends StatelessWidget {
                   genreId: genre['id'],
                   genreName: genre['name'],
                 ));
+              }).catchError((e) {
+                Get.snackbar("Error", "Cannot get reviews",
+                    colorText: Colors.white, backgroundColor: kRedError);
               });
             },
             child: Center(

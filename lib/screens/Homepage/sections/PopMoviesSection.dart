@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:movie_show/controllers/MovieController.dart';
 import 'package:movie_show/models/PopMovies.dart';
 import 'package:movie_show/screens/widgets/PopMovieCard.dart';
 
